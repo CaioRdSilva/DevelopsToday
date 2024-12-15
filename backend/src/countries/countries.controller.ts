@@ -1,15 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { CountriesService } from './countries.service';
-import { CreateCountryDto } from './dto/create-country.dto';
-import { UpdateCountryDto } from './dto/update-country.dto';
 
 @Controller('countries')
 export class CountriesController {
@@ -25,13 +15,14 @@ export class CountriesController {
     return this.countriesService.countryInfo(code);
   }
 
-  @Get('population')
-  population() {
-    return this.countriesService.population();
+  @Get('population/:countryName')
+  async population(@Param('countryName') countryName: string) {
+    // Lógica para pegar dados de população com base no nome do país
+    return this.countriesService.population(countryName);
   }
 
-  @Get('flags')
-  flags() {
-    return this.countriesService.flags();
+  @Get('flags/:countryName')
+  flags(@Param('countryName') countryName: string) {
+    return this.countriesService.flags(countryName);
   }
 }

@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCountryDto } from './dto/create-country.dto';
-import { UpdateCountryDto } from './dto/update-country.dto';
 import { HttpService } from '@nestjs/axios';
 import { map, Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
@@ -11,7 +9,7 @@ export class CountriesService {
   constructor(private readonly httpService: HttpService) {}
   findAll(): Observable<AxiosResponse<Country[]>> {
     return this.httpService
-      .get('https://date.nager.at/api/v3/AvailableCountries', {
+      .get(`${process.env.API_V3}/AvailableCountries`, {
         headers: {
           Accept: 'application/json',
         },
@@ -21,7 +19,7 @@ export class CountriesService {
 
   countryInfo(code: string): Observable<AxiosResponse<CountryInfo>> {
     return this.httpService
-      .get(`https://date.nager.at/api/v3/CountryInfo/${code}`, {
+      .get(`${process.env.API_V3}/CountryInfo/${code}`, {
         headers: {
           Accept: 'application/json',
         },
@@ -29,23 +27,49 @@ export class CountriesService {
       .pipe(map((response) => response.data));
   }
 
-  population(): Observable<AxiosResponse<object>> {
+  population(countryName: string): Observable<AxiosResponse<object>> {
     return this.httpService
-      .get(`https://countriesnow.space/api/v0.1/countries/population`, {
+      .get(`${process.env.API_V01}/countries/population`, {
         headers: {
           Accept: 'application/json',
         },
       })
-      .pipe(map((response) => response.data));
+      .pipe(
+        map((response) => {
+          const countryData = response.data.data.find(
+            (country) => country.country === countryName,
+          );
+
+          if (countryData) {
+            return countryData;
+          } else {
+            console.log(`País com nome ${countryName} não encontrado`);
+            throw new Error('País não encontrado');
+          }
+        }),
+      );
   }
 
-  flags(): Observable<AxiosResponse<object>> {
+  flags(countryName: string): Observable<AxiosResponse<object>> {
     return this.httpService
-      .get(`https://countriesnow.space/api/v0.1/countries/flag/images`, {
+      .get(`${process.env.API_V01}/countries/flag/images`, {
         headers: {
           Accept: 'application/json',
         },
       })
-      .pipe(map((response) => response.data));
+      .pipe(
+        map((response) => {
+          const countryData = response.data.data.find(
+            (country) => country.name === countryName,
+          );
+
+          if (countryData) {
+            return countryData;
+          } else {
+            console.log(`País com nome ${countryName} não encontrado`);
+            throw new Error('País não encontrado');
+          }
+        }),
+      );
   }
 }

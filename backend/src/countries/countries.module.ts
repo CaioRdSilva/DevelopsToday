@@ -4,7 +4,7 @@ import { CountriesController } from './countries.controller';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports:[HttpModule],
+  imports: [HttpModule],
   controllers: [CountriesController],
   providers: [CountriesService],
 })
