@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f9fafb;
+  color: #333;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Arial", sans-serif;
+}
+
+h2 {
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: bold;
+}
+
+p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #666;
+}
