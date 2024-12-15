@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3030:3030"   
+    volumes:
+      - ./backend:/app  
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+    depends_on:
+      - frontend   
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"  
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+
+networks:
+  app-network:
+    driver: bridge
